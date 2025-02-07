@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Vehicle Tracking</title>
+  <style>
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <!-- Firebase and Google Maps Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAogA7Mx10YZskk2xCWUkFUNUD2ykHY-Wc",
+  authDomain: "gps-tracker---gc.firebaseapp.com",
+  databaseURL: "https://gps-tracker---gc-default-rtdb.firebaseio.com",
+  projectId: "gps-tracker---gc",
+  storageBucket: "gps-tracker---gc.firebasestorage.app",
+  messagingSenderId: "160350592921",
+  appId: "1:160350592921:web:d1ae781a0474b67a44bd08",
+  measurementId: "G-YD45R1F2GH"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // Initialize Google Maps
+    let map;
+    let marker;
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 0, lng: 0 }, // Default center
+        zoom: 15,
+      });
+
+      marker = new google.maps.Marker({
+        position: { lat: 0, lng: 0 },
+        map: map,
+        title: "Vehicle Location",
+      });
+    }
+
+    // Listen for changes in Firebase Realtime Database
+    const vehicleRef = database.ref("your-database-path");
+    vehicleRef.on("value", (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const lat = data.lat;
+        const lng = data.lng;
+
+        // Update marker position
+        marker.setPosition({ lat, lng });
+        map.setCenter({ lat, lng });
+
+        console.log(`Vehicle moved to: ${lat}, ${lng}`);
+      }
+    });
+
+    // Initialize the map when the page loads
+    window.initMap = initMap;
+  </script>
+</body>
+</html>

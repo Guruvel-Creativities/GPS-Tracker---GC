@@ -1,0 +1,7 @@
+place a weight on the loadcell
+21:15:29.536 -> enter the weight in (whole) grams and press enter
+21:15:38.358 -> WEIGHT: 200
+21:15:40.203 -> SCALE:  -244.962509
+21:15:40.203 -> 
+21:15:40.203 -> use scale.set_offset(-25613); and scale.set_scale(-244.962509);
+21:15:40.203 -> in the setup of your project
